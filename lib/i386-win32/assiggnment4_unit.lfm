@@ -1,10 +1,10 @@
 object frm2016Assignment4: Tfrm2016Assignment4
   Left = 316
-  Height = 502
+  Height = 471
   Top = 138
   Width = 508
   Caption = 'frm2016Assignment4'
-  ClientHeight = 502
+  ClientHeight = 471
   ClientWidth = 508
   OnCreate = FormCreate
   LCLVersion = '1.6.0.4'
@@ -107,7 +107,7 @@ object frm2016Assignment4: Tfrm2016Assignment4
   end
   object lstReport: TListBox
     Left = 8
-    Height = 368
+    Height = 336
     Top = 128
     Width = 312
     ItemHeight = 0

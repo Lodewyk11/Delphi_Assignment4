@@ -171,6 +171,7 @@ end;
 
 procedure Tfrm2016Assignment4.btnTotalForTheDayClick(Sender: TObject);
 begin
+     //Disables the spin edit boxes and ensure that the buttons are enabled.
      sedBreakfast.Enabled := FALSE;
      sedLunch.Enabled := FALSE;
      sedDinner.Enabled := FALSE;
