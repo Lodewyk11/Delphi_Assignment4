@@ -54,20 +54,28 @@ implementation
 
 procedure Tfrm2016Assignment4.bmbResetClick(Sender: TObject);
 begin
+    //Reset all spinner values back to 0,
     sedBreakfast.Value := 0;
     sedLunch.Value := 0;
     sedDinner.Value := 0;
+
+    //Clear the report contents
     lstReport.Clear();
 
+    //Enable any spinners that might have been disabled.
     sedBreakfast.Enabled := TRUE;
     sedLunch.Enabled := TRUE;
     sedDinner.Enabled := TRUE;
 end;
 
 procedure Tfrm2016Assignment4.btnDisplayMiddayReportClick(Sender: TObject);
-   var middayTotal : Integer;
+  //Will hold the sum of the breakfast and lunch calorie count.
+  var middayTotal : Integer;
 begin
+    //Calculate the midday total thus far.
     middayTotal := sedBreakfast.Value + sedLunch.Value;
+
+    //Create and add the report enties.
     lstReport.Items.Add('Display Midday Report for: ' + formatdatetime('yyyy/mm/dd', StrToDate(edtDate.Text)));
     lstReport.Items.Add('Total thus far: ' + IntToStr(middayTotal) + ' calories');
     lstReport.Items.Add(' *** End of Midday Report for: ' + formatdatetime('yyyy/mm/dd', StrToDate(edtDate.Text)));
@@ -75,24 +83,35 @@ begin
 end;
 
 procedure Tfrm2016Assignment4.btnDisplaySummaryClick(Sender: TObject);
+  //Will indicate in which meal the most calories were consumed (Breakfast, Lunch or Dinner)
   var mostCaloriesMeal : String;
+  //TRUE if the most calories were consumed during Lunch.
   var mostLunch : Boolean;
+  //TRUE if the most calories were consumed during Dinner.
   var mostDinner : Boolean;
+  //Equal calories consumed in all meals.
   var allEqual : Boolean;
 begin
+  //Assume the most calories were consumed during Breakfast. We will overwrite this of otherwise.
   mostCaloriesMeal := 'Breakfast';
+  //Check if the most calories were consumed during Lunch.
   mostLunch := (sedLunch.Value > sedBreakfast.Value) AND (sedLunch.Value > sedDinner.Value);
+  //Check if the most calories were consumed during Dinner.
   mostDinner := (sedDinner.Value > sedBreakfast.Value) AND (sedDinner.Value > sedLunch.Value);
+  //Check if all meals had an equal amount of calories.
   allEqual := (sedBreakfast.Value = sedLunch.Value) AND (sedLunch.Value = sedDinner.Value);
 
+  //Overwrite the meal in which the most calories were consumed if it is true.
   if mostLunch then  mostCaloriesMeal := 'Lunch';
   if mostDinner then  mostCaloriesMeal := 'Dinner';
 
+  //Create and add the report entries.
   lstReport.Items.Add('Display Summary for: ' + formatdatetime('yyyy/mm/dd', StrToDate(edtDate.Text)));
   lstReport.Items.Add('Breakfast count: ' + IntToStr(sedBreakfast.Value) + ' calories');
   lstReport.Items.Add('Lunch count: ' + IntToStr(sedLunch.Value) + ' calories');
   lstReport.Items.Add('Dinner count: ' + IntToStr(sedDinner.Value) + ' calories');
 
+  //Only display in which meal the most calories were consumed if not all are equal.
   if allEqual then
     lstReport.Items.Add('equal amount of calories consumed in all meals')
   else
@@ -102,10 +121,14 @@ begin
 end;
 
 procedure Tfrm2016Assignment4.btnDisplayWarningClick(Sender: TObject);
-   var missedMeal : Boolean;
+  //TRUE if a meal was missed, i.e. a calorie count of 0 is recorded for a meal
+  var missedMeal : Boolean;
 begin
+    //Check if a meal has been missed.
     missedMeal :=  (sedBreakfast.Value = 0) OR (sedLunch.Value = 0) OR (sedDinner.Value = 0);
-    if missedMeal then
+
+  //Only create and add the report entry if a meal has been missed.
+  if missedMeal then
     begin
        lstReport.Items.Add('Display Warning for: ' + formatdatetime('yyyy/mm/dd', StrToDate(edtDate.Text)));
        lstReport.Items.Add('WARNING: missing a meal?');
@@ -115,12 +138,19 @@ begin
 end;
 
 procedure Tfrm2016Assignment4.btnGenerateRemarkClick(Sender: TObject);
+   //TRUE if all meals have been recorded, i.e. no 0 calorie amount has been entered.
    var allMeals : Boolean;
+   //TRUE is no meals have been recorded, i.e. all calorie amounts are 0.
    var noMeals : Boolean;
+   //Will hold the value of the remark.
    var sRemark : String;
 begin
+    //Check if all meals have been recorded.
     allMeals := (sedBreakfast.Value > 0) AND (sedLunch.Value > 0) AND (sedDinner.Value > 0);
+    //Check if no meals have been recoded.
     noMeals :=  (sedBreakfast.Value = 0) AND (sedLunch.Value = 0) AND (sedDinner.Value = 0);
+
+    //Create the remark based on the whether all meals, only some of the meals or none of the meals have been recorded.
     Case allMeals of
       True  :
         sRemark := 'Daily entry complete!';
@@ -131,6 +161,8 @@ begin
       True  :
         sRemark := 'No calories consumed'
     end;
+
+    //Create and add the report items.
     lstReport.Items.Add('Generate Remark for: ' + formatdatetime('yyyy/mm/dd', StrToDate(edtDate.Text)));
     lstReport.Items.Add(sRemark);
     lstReport.Items.Add('*** End of Remark ***');
@@ -139,6 +171,7 @@ end;
 
 procedure Tfrm2016Assignment4.btnTotalForTheDayClick(Sender: TObject);
 begin
+     //Disables the spin edit boxes and ensure that the buttons are enabled.
      sedBreakfast.Enabled := FALSE;
      sedLunch.Enabled := FALSE;
      sedDinner.Enabled := FALSE;
